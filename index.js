@@ -615,10 +615,11 @@ router.get('/view-finalized-quote', (req, res) => {
     res.redirect("/office-portal")
     return
   }
-
+  console.log(view_quote_id);
   conn.query(`SELECT * FROM quotes WHERE quote_id = "${view_quote_id}";`, (err, view_quote) => {
     if(err) throw err;
     let view_quote_string = JSON.stringify(view_quote);
+    console.log(view_quote);
     legacy_conn.query(`SELECT * FROM customers WHERE id = "${view_quote[0].customer_id}";`, (err, view_customer) => {
       if(err) throw err;
 
@@ -726,20 +727,60 @@ router.post('/update-discount', (req, res) => {
   }
   res.redirect(return_page);
 })
+
+// logic for update discount
+router.post('/update-additional-discount', (req, res) => {
+  view_quote_id = req.body.quote_id;
+  return_page = req.body.return_page;
+  let discount_type = req.body.discount_type;
+  let discount_amount = Number(req.body.discount_amount);
+  let final_total_price = Number(req.body.final_total_price);
+
+  console.log(`Quote ID: ${view_quote_id}, Return Page: ${return_page}, discount type: ${discount_type}, discount amount: ${discount_amount}, ${final_total_price}`)
+
+  if (!discount_amount || discount_amount === 0)
+  {
+    console.log('No input to update discount.');
+  }
+
+  if (discount_type === "dollars") {
+  let new_final_price = final_total_price - discount_amount;
+    conn.query(`UPDATE quotes SET additional_discount = "${discount_amount}", order_price = "${new_final_price}" WHERE quote_id = "${view_quote_id}";`, (err) => {
+      if(err) res.send(err);
+    }
+  )}
+  else if (discount_type === "percent") {
+    let discount_amount_dollars = (discount_amount/100) * final_total_price;
+    console.log(`Updated amount: ${discount_amount_dollars}`);
+    let new_final_price = final_total_price - discount_amount_dollars;
+    conn.query(`UPDATE quotes SET additional_discount = "${discount_amount_dollars}", order_price = "${new_final_price}" WHERE quote_id = "${view_quote_id}";`, (err) => {
+      if(err) res.send(err);
+    }
+    )
+  }
+  res.redirect(return_page);
+})
+
 // sanction quote
 router.post('/sanction-quote', (req, res) => {
   view_quote_id = req.body.quote_id;
 
-  conn.query(`SELECT `)
-
-  conn.query(`UPDATE quotes SET sanctioned='1',  WHERE quote_id ="${view_quote_id}"`, (err) => {
-    if(err) throw err;
+  conn.query(`SELECT final_total_price FROM quotes WHERE quote_id = "${view_quote_id}"`, (err, quote_price) => {
+    if (err) throw err;
     else {
-      return_page = req.body.return_page;
-      console.log(`Quote ${view_quote_id} has been sanctioned.`);
-      res.redirect('/office-portal');
-    }
-  })
+
+    let final_total_price = quote_price[0].final_total_price;
+    console.log(final_total_price);
+
+    conn.query(`UPDATE quotes SET sanctioned='1', order_price = "${final_total_price}" WHERE quote_id ="${view_quote_id}"`, (err) => {
+      if(err) throw err;
+      else {
+        return_page = req.body.return_page;
+        console.log(`Quote ${view_quote_id} has been sanctioned.`);
+        res.redirect('/office-portal');
+      }
+    })
+  }})
 })
 
 const axios = require("axios")

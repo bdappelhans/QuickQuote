@@ -204,6 +204,8 @@
       let initial_total_price = (Number(quote_info[0].initial_total_price)).toFixed(2);
       let discount = (Number(quote_info[0].discount)).toFixed(2);
       let final_total_price = (Number(quote_info[0].final_total_price)).toFixed(2);
+      let additional_discount = (Number(quote_info[0].additional_discount)).toFixed(2);
+      let order_price = (Number(quote_info[0].order_price)).toFixed(2);
 
       document.querySelector('.customer-name').innerHTML = `<b>${customer_info[0].name}`;
 
@@ -219,7 +221,9 @@
       let price_breakdown = `<div class="plain-text"><u>Price Breakdown</u></div>
       <div class="price">Initial Total Price: $${initial_total_price}</div>
       <div class="price">Discount: $${discount}</div>
-      <div class="price">Final Total Price: <b>$${final_total_price}</b> <div>
+      <div class="price">Final Quote Price: $${final_total_price}<div>
+        <div class="price">Additional Discount: $${additional_discount}</div>
+        <div class="price">Order Price: <b>$${order_price}</b></div>
         <input type="button" id="edit-discount-button" value="Edit Discount" name="Edit Discount">
       </div>`;
 
@@ -228,10 +232,10 @@
       <div class="price">Initial Total Price: $${initial_total_price}</div>
       <div class="price">Discount: $${discount}</div>
       <div class="price">Final Total Price: <b>$${final_total_price}</b> <div>
-      <form action = '/update-discount' method='POST'>
+      <form action = '/update-additional-discount' method='POST'>
         <div class="update-discount-text">Update Discount</div>
         <input type="hidden" name="return_page" value="view-sanctioned-quote">
-        <input type="hidden" name="initial_total_price" value="${quote_info[0].initial_total_price}">
+        <input type="hidden" name="final_total_price" value="${quote_info[0].final_total_price}">
         <div class="enter-discount">$<input type ="number" step=".01" class="discount-box" name="discount_amount" min="0" max="${quote_info[0].initial_total_price}"></div>
         <div><input type="radio" id="dollars" name="discount_type" value="dollars" checked>
             <label for="dollars">Dollars</label>
