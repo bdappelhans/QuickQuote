@@ -742,4 +742,31 @@ router.post('/sanction-quote', (req, res) => {
   })
 })
 
+const axios = require("axios")
+
+//processing system testing
+router.post('/order-quote', (req, res) => {
+  //Set view_quote_id to req.body.quote_id...
+
+  //Query to update quote and redirect user...
+
+  //Inside query, before redirect, send request to processing system...
+  console.log(req.body.quote_id)
+  axios.post('http://blitz.cs.niu.edu/PurchaseOrder/', {
+    'order': req.body.quote_id,
+    'associate': req.body.associate,
+    'custid': req.body.custid,
+    'amount': req.body.amount
+  }).then(res => {
+    console.log(res.data)
+
+    //Use results to set commission in quote and total_commission in customer
+    let commission = parseFloat('0.' + res.data.commission) * req.body.amount
+    conn.query(`UPDATE quotes SET commission = ${commission} WHERE quote_id = "${req.body.quote_id}"`)
+    conn.query(`UPDATE sales_assoc SET total_commission = total_commission + ${commission} WHERE id = "${req.body.associate}"`)
+  })
+
+  res.send("WORKING")
+})
+
 app.listen(3000)
