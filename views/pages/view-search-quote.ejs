@@ -193,11 +193,26 @@
     let initial_total_price = (Number('<%= quote_info[0].initial_total_price %>')).toFixed(2);
     let discount = (Number('<%= quote_info[0].discount %>')).toFixed(2);
     let final_total_price = (Number('<%= quote_info[0].final_total_price %>')).toFixed(2);
+    let additional_discount = (Number('<%= quote_info[0].additional_discount %>')).toFixed(2);
+    let order_price = (Number('<%= quote_info[0].order_price %>')).toFixed(2)
 
-    let price_breakdown = `<div class="plain-text"><u>Price Breakdown</u></div>
+    let price_breakdown = `<div class="plain-text"><u>Price Breakdown</u></div>`
+
+    if('<%= quote_info[0].sanctioned %>' == '1') {
+        price_breakdown += `
+        <div class="price">Initial Quote Price: $${initial_total_price}</div>
+        <div class="price">Discount: $${discount}</div>
+        <div class="price">Final Quote Price: $${final_total_price}</div>
+        <div class="price">Additional Discount: $${additional_discount}</div>
+        <div class="price">Order Price: <b>$${order_price}</b></div>`
+    }
+    else {
+      price_breakdown += `
       <div class="price">Initial Total Price: $${initial_total_price}</div>
       <div class="price">Discount: $${discount}</div>
       <div class="price">Final Total Price: <b>$${final_total_price}</b></div>`
+    }
+
     document.querySelector('.price-breakdown').innerHTML = price_breakdown;
 
     let line_html = `

@@ -227,7 +227,7 @@
                 else if (i.sanctioned) status = "sanctioned"
                 else if (i.finalized) status = "finalized"
 
-                let price = i.final_total_price.toString()
+                let price = i.sanctioned ? i.order_price.toString() : i.final_total_price.toString()
                 let idx = price.indexOf('.')
 
                 if (idx == -1) price += '.00'
