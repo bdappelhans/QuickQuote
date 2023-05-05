@@ -158,6 +158,7 @@
             Customer Name
         </div>
         <div class="date">Generated on Date</div>
+        <div class="commission"></div>
         <div style="margin-top: 20px; font-size: 20px;"><u>Contact Information</u></div>
         <div class="contact_email"></div>
         <div>Street: <%= customer_info[0].street %></div>
@@ -195,6 +196,7 @@
     let final_total_price = (Number('<%= quote_info[0].final_total_price %>')).toFixed(2);
     let additional_discount = (Number('<%= quote_info[0].additional_discount %>')).toFixed(2);
     let order_price = (Number('<%= quote_info[0].order_price %>')).toFixed(2)
+    let commission = (Number('<%= quote_info[0].commission %>')).toFixed(2)
 
     let price_breakdown = `<div class="plain-text"><u>Price Breakdown</u></div>`
 
@@ -234,4 +236,6 @@
         <% } %>
     `
     document.getElementById("line_items").innerHTML = line_html;
+
+    document.querySelector(".commission").textContent = "Commission: $" + commission;
 </script>

@@ -784,30 +784,26 @@ router.post('/sanction-quote', (req, res) => {
 })
 
 const axios = require("axios")
-
-//processing system testing
 router.post('/order-quote', (req, res) => {
-  //Set view_quote_id to req.body.quote_id...
+  view_quote_id = req.body.quote_id
+  conn.query(`UPDATE quotes SET ordered='1' WHERE quote_id = "${view_quote_id}"`, (err, data) => {
+    if(err) throw err
 
-  //Query to update quote and redirect user...
+    axios.post('http://blitz.cs.niu.edu/PurchaseOrder/', {
+      'order': view_quote_id,
+      'associate': req.body.associate,
+      'custid': req.body.custid,
+      'amount': parseFloat(req.body.amount)
+    }).then(result => {
+      let commission = parseFloat('0.' + result.data.commission) * parseFloat(req.body.amount)
+      conn.query(`UPDATE quotes SET commission = ${commission} WHERE quote_id = "${req.body.quote_id}"`)
+      conn.query(`UPDATE sales_assoc SET total_commission = total_commission + ${commission} WHERE id = "${req.body.associate}"`)
 
-  //Inside query, before redirect, send request to processing system...
-  console.log(req.body.quote_id)
-  axios.post('http://blitz.cs.niu.edu/PurchaseOrder/', {
-    'order': req.body.quote_id,
-    'associate': req.body.associate,
-    'custid': req.body.custid,
-    'amount': req.body.amount
-  }).then(res => {
-    console.log(res.data)
-
-    //Use results to set commission in quote and total_commission in customer
-    let commission = parseFloat('0.' + res.data.commission) * req.body.amount
-    conn.query(`UPDATE quotes SET commission = ${commission} WHERE quote_id = "${req.body.quote_id}"`)
-    conn.query(`UPDATE sales_assoc SET total_commission = total_commission + ${commission} WHERE id = "${req.body.associate}"`)
-  })
-
-  res.send("WORKING")
+      return_page = req.body.return_page;
+      console.log(`Quote ${view_quote_id} has been ordered. Commission: ${commission}`);
+      res.redirect('/office-portal');
+    })
+ })
 })
 
 app.listen(3000)

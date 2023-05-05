@@ -189,7 +189,7 @@
       </form>
         <div class="finalize-text">Click the button below to send the quote to order.</div>
         <div>Warning: Once a quote has been sent to order, it can no longer be edited.</div>
-        <form action="/sanction-quote" method="POST">
+        <form action="/order-quote" method="POST">
           <div class="sanction-button"></div>
         </form>
         </div>
@@ -292,8 +292,14 @@
       // render table
       document.getElementById("line_items").innerHTML = line_items_table;
 
-      let sanction_button = `<input type="hidden" name="return_page" value="office-portal"><button type="submit" name="quote_id" value="${quote_info[0].quote_id}">Send to Order</button>`;
-      document.querySelector('.sanction-button').innerHTML = sanction_button;
+      let sanction_button = `
+        <input type="hidden" name="return_page" value="office-portal">
+        <input type="hidden" name="custid" value="${customer_info[0].id}">
+        <input type="hidden" name="associate" value="${quote_info[0].sa_id}">
+        <input type="hidden" name="amount" value="${order_price}">
+        <button type="submit" name="quote_id" value="${quote_info[0].quote_id}">Send to Order</button>`;
+      
+        document.querySelector('.sanction-button').innerHTML = sanction_button;
     </script>
   </body>
 </html>
