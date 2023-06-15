@@ -2,6 +2,7 @@
 This is my final project for my Introduction to Software Engineering course. I collaborated with other students to design and build a web application to record and track sales quotes for a company providing plant repair services. Further details about the project requirements and how it was implemented can be found below.
 
 Quote System - Problem Statement
+
 As a group of software engineers with a company that sells plant repair services via a network of sales people, you are tasked to build a new system that enables the sales force to record their quotes via the Internet. The system will maintain a database of sales associates, handle the recording of sales quotes, establish and fulfill purchase orders. The system will also assign sales commissions for the sales associate.
 
 A sales associate is presented with a custom quote tracking program which can be run anywhere on an Internet platform. After the associate logs in (s)he can enter sales quotes for customers. Quotes are entered for existing customers, their information is maintained in a company legacy database with customer name, address, and contact info (details provided later). A quote consists of multiple line items. Each line item has a free form description and a price. The associate can also attach secret notes of free form text. The quote is entered into a new quote database. The associate also attaches a customer e-mail address to the quote, which is used as e-mail destination for communication as the quote is processed. The associate can edit quotes until (s)he finalizes the quote.
@@ -13,4 +14,5 @@ The third interface (also in-house) allows to convert a quote into a purchase or
 And lastly, there will be an administrative interface to maintain sales associate and quote information. Sales associate information contains their name, user id, password, accumulated commission, and address. The interface allows to view, add, edit and delete sales associate records. It also allows to search and view quotes based on status (finalized, sanctioned, ordered), date range, sales associate, and customer.
 
 Quote System - Design and Implementation
+
 The first step we took in tackling the project involved creating a use case model to demonstrate how the system interacts with different outside actors. Per the problem statement, the company's customers come from an existing legacy database. New data like sales associates and quotes had to be tracked in a new database. I created a new MySQL database and hosted it on AWS. We decided to implement the project primarily using tools like JavaScript, html, node.js, express.js, and jQuery.
