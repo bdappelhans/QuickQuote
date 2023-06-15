@@ -1,0 +1,243 @@
+<html>
+  <head>
+    <title>QuickQuote | Office Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;1,100;1,200&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="public/styles/index-options.css">
+
+    <link rel="stylesheet" href="public/styles/button.css">
+
+    <style>
+      body
+      {
+        margin: 0;
+        font-family: Poppins, Arial;
+        text-decoration: none;
+
+      }
+
+      .background
+      {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        background: linear-gradient(to bottom, rgb(17, 139, 232) , rgba(254, 251, 251, 0.755));
+        flex-direction: column;
+        padding: 8px;
+      }
+
+      .logo
+      {
+        margin-top: 100px;
+        margin-bottom: 80px;
+        color: white;
+        font-size: 60px;
+        opacity: 0.65;
+        font-weight: 500;
+        font-style: italic;
+      }
+
+      .welcome-text
+      {
+        padding-top: 50px;
+        font-weight: 600;
+        font-size: 26px;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 30px;
+      }
+
+      .plain-text, .sanctioned-text
+      {
+        font-size: 20px;
+      }
+
+      .sanctioned-text
+      {
+        margin-top: 25px;
+      }
+
+      .top
+      {
+        width: 100%;
+        display: flex;
+        justify-content: right;
+      }
+
+      .logout-button
+      {
+        margin-right: 15px;
+        margin-top: 15px;
+        background-color: white;
+        border-radius: 5px;
+        padding: 5px;
+        opacity: 0.8;
+        text-decoration: none;
+      }
+
+      .logout-text
+      {
+        text-decoration: none;
+      }
+
+      .logo-welcome-box
+      {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .logo
+      {
+        margin-top: 25px;
+        margin-bottom: 10px;
+      }
+
+      .welcome
+      {
+        font-weight: 600;
+        font-size: 26px;
+        margin-bottom: 20px;
+      }
+
+      .header-button
+      {
+        background-color: black;
+        color: white;
+        font-size: 20px;
+        height: 100%;
+      }
+
+      .bottom
+      {
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <div class="top">
+        <a href="/logout" class = "logout-button">
+          <div class="logout-text">
+            Log Out
+          </div>
+        </a>
+      </div>
+      <div class="logo-welcome-box">
+        <div class="logo">QuickQuote</div>
+        <div class="welcome">Welcome</div>
+      </div>
+      <div class="plain-text">
+        <b>Finalized Quotes</b>
+      </div>
+      <form action="/viewfinquote" method = "POST">
+      <table class="styled-table" id="finquotes" border="1" cellpadding="20" width = "100%">
+        <thead>
+          <th style="width: 25%;">Date</th>
+          <th style="width: 35%;">Customer</th>
+          <th style="width: 30%;">Sales Associate</th>
+          <th style="width: 10%;">Action</th>
+        </thead>
+      </table>
+      </form>
+      <div class="sanctioned-text">
+        <b>Sanctioned Quotes</b>
+      </div>
+      <form action="/viewsancquote" method = "POST">
+        <table class="styled-table" id="sancquotes" border="1" cellpadding="20" width = "100%">
+          <th style="width: 25%;">Date</th>
+          <th style="width: 35%;">Customer</th>
+          <th style="width: 30%;">Sales Associate</th>
+          <th style="width: 10%;"></th>
+        </table>
+        </form>
+        <div class="bottom"></div>
+    </div>
+    <script>
+      let customer_list = JSON.parse('<%- customer_list%>');
+      let sanctioned_quotes = JSON.parse('<%- sanctioned_quotes%>');
+      let finalized_quotes = JSON.parse('<%- finalized_quotes%>');
+      let user_info = JSON.parse('<%- user_info %>');
+
+      let finalized_table = `<th>Date</th>
+        <th>Customer</th>
+        <th>Sales Associate</th>
+        <th></th>`;
+
+      let sanctioned_table = `<th>Date</th>
+          <th>Customer</th>
+          <th>Sales Associate</th>
+          <th></th>`;
+
+      if (user_info[0].admin === 1)
+      {
+        document.querySelector('.top').innerHTML = `
+        <a href="/adminbtn" class = "logout-button">
+          <div class="logout-text">
+            Admin Portal
+          </div> 
+        </a>
+        <a href="/logout" class = "logout-button">
+          <div class="logout-text">
+            Log Out
+          </div>
+        </a>`
+      };
+
+      // loop through finalized_quotes to append table string with values
+      for (i = 0; i < finalized_quotes.length; i++)
+      {
+        for (j = 0; j < customer_list.length; j++)
+        {
+          if (finalized_quotes[i].customer_id === customer_list[j].id)
+          {
+            let customer = customer_list[j].name;
+            // format date
+            let year = finalized_quotes[i].date_time.slice(0, 4);
+            let month = finalized_quotes[i].date_time.slice(5, 7);
+            let day = finalized_quotes[i].date_time.slice(8, 10);
+            let date = `${month}/${day}, ${year}`;
+            
+            //append quote string to form table
+            finalized_table += `<tbody>
+            <tr><td>${date}</td>
+            <td>${customer}</td>
+            <td>${finalized_quotes[i].sa_id}</td>
+            <td><button class="viewQuote" type="submit" name="quote_id" value="${finalized_quotes[i].quote_id}">View</button></td></tr></tbody>`;
+          }
+        }
+      }
+
+      // loop through sanctioned_quotes to append html string with values
+      for (i = 0; i < sanctioned_quotes.length; i++)
+      {
+        for (j = 0; j < customer_list.length; j++)
+        {
+          if (sanctioned_quotes[i].customer_id === customer_list[j].id)
+          {
+            let customer = customer_list[j].name;
+            // format date
+            let year = sanctioned_quotes[i].date_time.slice(0, 4);
+            let month = sanctioned_quotes[i].date_time.slice(5, 7);
+            let day = sanctioned_quotes[i].date_time.slice(8, 10);
+            let date = `${month}/${day}, ${year}`;
+            
+            //append quote string to form table
+            sanctioned_table += `
+            <tr><td>${date}</td>
+            <td>${customer}</td>
+            <td>${sanctioned_quotes[i].sa_id}</td>
+            <td><button class="viewQuote" type="submit" name="quote_id" value="${sanctioned_quotes[i].quote_id}">View</button></td></tr>`;
+          }
+        }
+      }
+
+      // render finalized quotes table with appended string of html
+      document.getElementById('finquotes').innerHTML = finalized_table;
+
+      document.getElementById('sancquotes').innerHTML = sanctioned_table;
+    </script>
+  </body>
+</html>

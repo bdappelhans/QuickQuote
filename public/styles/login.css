@@ -1,0 +1,53 @@
+.center
+{
+  display: flex;
+  border-radius: 5px;
+  background-color: white;
+  width: 400px;
+  height: 300px;
+  opacity: 0.6;
+  align-items: center;
+  flex-direction: column;
+}
+
+.username-input,
+.password-input
+{
+    font-size: 26px;
+    width: 190px;
+}
+
+.username-input
+{
+    margin-bottom: 20px;
+}
+
+.login-button
+{
+    display: flex;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    opacity: 0.8;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.login-button:hover
+{
+    color: white;
+}
+
+.login-button:active
+{
+    background-color: gray;
+}
+
+.login-text
+{
+    font-size: 22px;
+    color: white;
+}

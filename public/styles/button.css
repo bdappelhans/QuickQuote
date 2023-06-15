@@ -1,0 +1,84 @@
+
+button, .input-button {
+  background-color: #FFFFFF;
+  border: 0.5px solid #222222d2;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: rgba(21, 20, 20, 0.804);
+  cursor: pointer;
+  display: inline-block;
+  font-family: Poppins, Arial;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 8px 8px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: .5s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+  opacity: 0.85;
+  border-color:rgb(189, 171, 171);
+}
+
+.login-button:active {
+  background-color: rgba(17, 139, 232, 0.17);
+}
+
+button:hover, .input-button:hover
+{
+  background-color:rgb(17, 139, 232);
+  border: solid, 0.5px;
+  border-color: rgba(17, 139, 232, 0.695);
+  color: white;
+  box-shadow: -2px 2px 4px rgb(139, 133, 133) ;
+  transition: .5s;
+}
+
+.logout-button
+{
+  color: rgba(51, 47, 47, 0.604);
+}
+.logout-button:hover{
+  transition: .5s;
+  background-color: rgba(17, 139, 232, 0.355);
+  box-shadow: -2px 2px 8px rgba(48, 40, 40, 0.789) ;
+  color: white;
+  border: solid, 0.5px;
+  border-color:rgba(51, 47, 47, 0.604)
+}
+
+.logout-button:active {
+  background-color: rgba(158, 179, 195, 0.389);
+}
+button:active, .input-button:active
+{
+    background-color: rgba(17, 139, 232, 0.17);
+    border-color:rgba(17, 139, 232, 0.17);
+}
+
+button:focus-visible, .input-button:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+button:disabled, .input-button:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.styled-table
+{
+  border-collapse: collapse;
+  margin: 5px 0;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+

@@ -1,0 +1,58 @@
+.center
+{
+  border-radius: 5px;
+  background-color: white;
+  width: 400px;
+  height: 300px;
+  opacity: 0.6;
+}
+
+.buttons
+{ 
+  display: flex;
+  height: 130px;
+}
+
+.on-site-button
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height:100%;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.office-button
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+  cursor: pointer;
+  text-decoration: none;
+  border-left-width: 1px;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-top-width: 0;
+  border-color: black;
+  border-style: solid;
+}
+
+.on-site-button:hover .options-text,
+.office-button:hover .options-text
+{
+  color: rgb(17, 139, 232);
+}
+
+.options-text
+{
+  font-weight: 200;
+  color: black;
+  font-size: 40px;
+  justify-content: center;
+  text-decoration: none;
+  transition: 0.2s;
+}
